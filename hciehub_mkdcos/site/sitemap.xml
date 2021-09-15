@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
+     <loc>https://www.hciehub.com/</loc>
+     <lastmod>2021-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://www.hciehub.com/HCIE/01-%E4%BA%91%E8%AE%A1%E7%AE%97%E7%AE%80%E4%BB%8B/</loc>
+     <lastmod>2021-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://www.hciehub.com/Docker/00-Docker%E5%AE%89%E8%A3%85/</loc>
+     <lastmod>2021-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://www.hciehub.com/Docker/01-docker%E5%8D%87%E7%BA%A7/</loc>
+     <lastmod>2021-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://www.hciehub.com/Docker/02-Docker%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/</loc>
+     <lastmod>2021-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://www.hciehub.com/Docker/03-Docker%E9%95%9C%E5%83%8F%E8%AF%A6%E8%A7%A3/</loc>
+     <lastmod>2021-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://www.hciehub.com/Docker/04-Docker%E5%AE%B9%E5%99%A8/</loc>
+     <lastmod>2021-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://www.hciehub.com/Docker/05-Docker%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA/</loc>
+     <lastmod>2021-09-15</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+</urlset>

@@ -1,0 +1,1061 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Just for fun.">
+      
+      
+      
+        <meta name="author" content="lickguys">
+      
+      
+        <link rel="canonical" href="https://www.hciehub.com/Docker/03-Docker%E9%95%9C%E5%83%8F%E8%AF%A6%E8%A7%A3/">
+      
+      <link rel="icon" href="../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.3">
+    
+    
+      
+        <title>03-Docker镜像详解 - Hcie hub</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e35208c4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","None","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){var e;this.value&&(e=document.location.pathname,ga("send","pageview",e+"?q="+this.value))}),"undefined"!=typeof location$&&location$.subscribe(function(e){ga("send","pageview",e.pathname)})})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#03-docker" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Hcie hub" class="md-header__button md-logo" aria-label="Hcie hub" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Hcie hub
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              03-Docker镜像详解
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo" type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m10-3a5 5 0 0 1 5 5 5 5 0 0 1-5 5H7a5 5 0 0 1-5-5 5 5 0 0 1 5-5h10M7 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3h10a3 3 0 0 0 3-3 3 3 0 0 0-3-3H7z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple" type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/hciehub.github.io" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hciehub/hciehub.github.io
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../HCIE/01-%E4%BA%91%E8%AE%A1%E7%AE%97%E7%AE%80%E4%BB%8B/" class="md-tabs__link">
+        HCIE
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../00-Docker%E5%AE%89%E8%A3%85/" class="md-tabs__link md-tabs__link--active">
+        O&M
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Hcie hub" class="md-nav__button md-logo" aria-label="Hcie hub" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    Hcie hub
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/hciehub.github.io" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hciehub/hciehub.github.io
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        HCIE
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="HCIE" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          HCIE
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HCIE/01-%E4%BA%91%E8%AE%A1%E7%AE%97%E7%AE%80%E4%BB%8B/" class="md-nav__link">
+        01-云计算简介
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        O&M
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="O&M" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          O&M
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" checked>
+      
+      <label class="md-nav__link" for="__nav_3_1">
+        Docker初探
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Docker初探" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Docker初探
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-Docker%E5%AE%89%E8%A3%85/" class="md-nav__link">
+        00-Docker安装
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-docker%E5%8D%87%E7%BA%A7/" class="md-nav__link">
+        01-Docker升级
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-Docker%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="md-nav__link">
+        02-Docker中的几个基本概念
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          03-Docker镜像详解
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        03-Docker镜像详解
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1.镜像和容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2.拉取镜像
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3docker-hub" class="md-nav__link">
+    3.镜像来源Docker Hub
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4.镜像的命名和标签
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5.拉取镜像
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6docker-image-ls" class="md-nav__link">
+    6.过滤docker image ls的输出
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    7.镜像检索
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    8.镜像和分层
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    9.镜像散列值
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    10.删除镜像
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    11.镜像的导入和导出
+  </a>
+  
+    <nav class="md-nav" aria-label="11.镜像的导入和导出">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    镜像的导出
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    镜像的导入
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-Docker%E5%AE%B9%E5%99%A8/" class="md-nav__link">
+        04-Docker容器
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-Docker%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA/" class="md-nav__link">
+        05-Docker镜像构建
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1.镜像和容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2.拉取镜像
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3docker-hub" class="md-nav__link">
+    3.镜像来源Docker Hub
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4.镜像的命名和标签
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5.拉取镜像
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6docker-image-ls" class="md-nav__link">
+    6.过滤docker image ls的输出
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    7.镜像检索
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8" class="md-nav__link">
+    8.镜像和分层
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    9.镜像散列值
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    10.删除镜像
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    11.镜像的导入和导出
+  </a>
+  
+    <nav class="md-nav" aria-label="11.镜像的导入和导出">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    镜像的导出
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    镜像的导入
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="03-docker">03-Docker镜像详解<a class="headerlink" href="#03-docker" title="Permanent link">&para;</a></h1>
+<p>​   Docker中的镜像就像停止运行的容器（类）。实际上你可以停止某个容器的运行并从中创建新的镜像。在该前提下，镜像可以理解为一种构建时（build-time）结构，而容器可以理解为一种运行时（run-time）结构。</p>
+<p><img alt="2381630918888_.pic_hd" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/2381630918888_.pic_hd.jpg" /></p>
+<h2 id="1">1.镜像和容器<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>​   通常使用docker container run 和docker container service create命令从某个镜像启动一个或多个容器。一旦容器从镜像启动之后，二者之间的关系就变成了相互依赖的关系。并且在镜像上的容器全部停止之前，镜像是无法被删除的。尝试删除正在被使用的镜像会导致错误。</p>
+<p><img alt="image-20210906182203363" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210906182203363.png" /></p>
+<p>如下：</p>
+<p><img alt="image-20210906180913110" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210906180913110.png" /></p>
+<p>​   关于镜像和容器可以这么理解。镜像由多个层组成，每层叠加之后，从外部看来就如一个独立的对象。镜像内部是一个精简的操作系统（OS），同时还包含应用运行所必须的文件和依赖包。因为容器是设计初衷就是快速和小巧，所以镜像通常比较小。容器目的就是运行应用和服务，这意味容器的镜像中必须包含应用/服务运行的操作系统和应用文件，但是上面说了，容器是追求快速和小巧。这意味着构建镜像的时候通常需要裁减掉不必要的部分，保持较小的体积。</p>
+<p>​   Docke镜像通常只有一个精简的shell，甚至没有shell。镜像中不包含**内核**——容器都是共享Docker所在主机的**内核**。所以有时会说容器仅包含必要的操作系统（通常只有操作系统文件和文件系统对象）。</p>
+<p>​   对于一个镜像来说通常它有多层。构成但是构成镜像的每一层都是只读的，当运行docker container run命令之后根据相应的镜像创建容器。创建出的容器实际上就是在镜像的基础上添加了一个可供读写操作的层。这有点类似于VM中的链接克隆技术。</p>
+<h2 id="2">2.拉取镜像<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>Linux Docker主机本地镜像仓库通常位于/var/lib/docker/[storage-dirver],在此处的storage-dirver指的是使用的存储驱动的类型。在不同版本的docker中使用的存储驱动类型并不总是一致的。本次安装的Docker 版本为：Docker Version：20.10.8 Storage Driver：overlay。除此之外Storage Diver还有extfs，overlay2等。</p>
+<p>​   例子：</p>
+<p>使用：docker system info可以查看docker的信息,其中包含存储驱动类型。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker system info</span>
+</code></pre></div>
+<p><img alt="image-20210906215032969" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210906215032969.png" />    </p>
+<div class="highlight"><pre><span></span><code><span class="c1"># cd /var/lib/docker/overlay</span>
+<span class="c1"># ll</span>
+</code></pre></div>
+<p><img alt="image-20210906214450299" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210906214450299.png" /></p>
+<p>上图中蓝色字符为镜像的Image ID</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image ls</span>
+</code></pre></div>
+<p><img alt="image-20210906214838822" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210906214838822.png" /></p>
+<p>值得说明的一点是，在使用docker image ls命令时。显示出来的Image ID实际上并不是完整的Image ID是实际Image ID的最后几位。</p>
+<p>拉取镜像：</p>
+<div class="highlight"><pre><span></span><code># docker image pull node:latest
+</code></pre></div>
+<p><img alt="image-20210906221431664" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210906221431664.png" /></p>
+<h2 id="3docker-hub">3.镜像来源Docker Hub<a class="headerlink" href="#3docker-hub" title="Permanent link">&para;</a></h2>
+<p>Docker镜像存储在镜像仓库服务（Image Registry）当中。Docker客户端的镜像仓库服务是可以配置的，默认使用的是Docker Hub。</p>
+<p>​   镜像仓库服务包含多个镜像仓库（Image Registry）。同样，一个镜像仓库中也会包含多个镜像。</p>
+<h2 id="4">4.镜像的命名和标签<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<h2 id="5">5.拉取镜像<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>​   只要给出镜像的名字和标签就能够从官方的镜像仓库中定位一个镜像。镜像的名字和标签之间使用的的是“:”进行分割，例如从官方拉取镜像时docker image pull的命令格式如下。</p>
+<p>​   docker image pull [repostiory:latest]</p>
+<p>从mongo仓库中拉取标签为3.2.0-rc1的镜像</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image pull mongo:3.2.0-rc1</span>
+</code></pre></div>
+<p><strong>注意：</strong></p>
+<p>​   如果没有在镜像仓库名称后面指定具体的镜像标签，则Docker会默认拉取标签为latest的镜像。但是latest标签是一个非强制标签，也就是说带有latest标签的镜像并不能够保证该镜像是仓库中最新的镜像。</p>
+<h2 id="6docker-image-ls">6.过滤docker image ls的输出<a class="headerlink" href="#6docker-image-ls" title="Permanent link">&para;</a></h2>
+<p>docker使用 --filter参数来实现对docker image ls输出的过滤。    </p>
+<p>​   下面的实例会返回本地镜像中的悬虚镜像。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image ls --filter dangling=true</span>
+</code></pre></div>
+<p><img alt="image-20210906230048181" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210906230048181.png" /></p>
+<p>悬虚镜像是那些没有标签的镜像。在列表中展示为**[none]:[none]**。通常出现这种情况，是因为构建了一个新的镜像，然后为该镜像打了一个已经存在的标签。</p>
+<p>docker支持的过滤器：</p>
+<ul>
+<li>
+<p>dangling：可以指定true或者flase，返回的结果是悬虚镜像（true）或者非悬虚镜像（false）。</p>
+</li>
+<li>
+<p>before：需要镜像名称或者ID作为参数，返回之前被创建的所有镜像</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image ls  --filter brefore=7d0d8fa37224</span>
+</code></pre></div>
+<p><img alt="image-20210907090209390" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907090209390.png" /></p>
+<ul>
+<li>since：与before类似，不过返回的是指定镜像之后创建的所有镜像。</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image ls  --filter since=7d0d8fa37224</span>
+</code></pre></div>
+<p><img alt="image-20210907090247745" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907090247745.png" /></p>
+<ul>
+<li>
+<p>label：根据标注（label）的名称或者值对镜像进行过滤</p>
+</li>
+<li>
+<p>使用reference完成过滤并且仅显示标签为latest的镜像</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image ls --filter=reference=&quot;*:latest&quot;</span>
+</code></pre></div>
+<p><img alt="image-20210907090735746" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907090735746.png" /></p>
+<ul>
+<li>
+<p>使用--formt参数来通过Go模板对输出的内容进行格式化。</p>
+</li>
+<li>
+<p>返回主机上镜像大小</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image ls  --format &quot;{{.Size}}&quot;</span>
+</code></pre></div>
+<p><img alt="image-20210907091612889" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907091612889.png" /></p>
+<ul>
+<li>使用下面的命令可以返回全部镜像但是只显示仓库，标签和大小信息。</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">#docker image ls --format &quot;{{.Repository}}:    {{.Tag}}:    {{.Size}}&quot;</span>
+</code></pre></div>
+<p><img alt="image-20210907092326218" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907092326218.png" /></p>
+<h2 id="7">7.镜像检索<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<p>docker search命令允许通过CLI的方式搜索Docker Hub。通过NAME进行匹配，并基于返回的内容进行过滤。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker search ubuntu</span>
+</code></pre></div>
+<p><img alt="image-20210907093719372" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907093719372.png" /></p>
+<p>实际上Docker search默认会返回25条结果；但是我在上面的截图中省略了一部分。</p>
+<p>通过Docker内置的help工具可以知道，docker search 可以通过Options参数来过过滤输出的结果。</p>
+<p><img alt="image-20210907093643826" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907093643826.png" /></p>
+<p>值得注意的是，在使用Docker search ubuntu这条命令时默认输出了25条ubuntu仓库的信息。但是这些仓库并不都是官方仓库。如果你想输出的结果只显示官方仓库那么你就可以使用filter参数对输出的结果尽心过滤。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker search ubuntu --filter &quot;is-official=true&quot;</span>
+</code></pre></div>
+<p><img alt="image-20210907094446456" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907094446456.png" /></p>
+<p>前面说到Docker search默认只会输出25条结果，你可以通过使用limit参数来增加返回的条目数，但是最大不能超过100条。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker search ubuntu --limit 100</span>
+</code></pre></div>
+<p><img alt="image-20210907094800059" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907094800059.png" /></p>
+<p><img alt="image-20210907094828544" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907094828544.png" /></p>
+<h2 id="8">8.镜像和分层<a class="headerlink" href="#8" title="Permanent link">&para;</a></h2>
+<p>​   在前面其实已经提到过镜像是分层的。镜像是由一些松耦合的只读镜像层组成。</p>
+<p><img alt="image-20210906182203363" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210906182203363.png" /></p>
+<p>​   docker复制堆叠这些镜像层，并且把他们表示为单一统一的对象。</p>
+<p>​   尝试拉取一个镜像。拉取ruby这个镜像，以Already exists结尾的每一行表示本地已经存在的镜像层。以pull complete结尾的是在网上拉取的层。ruby这个镜像总共包含8个层。每个层都使用层ID的形式进行区别。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image pull ruby:latest</span>
+</code></pre></div>
+<p><img alt="image-20210907095553871" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907095553871.png" /></p>
+<p>查看镜像分层的另一种方式</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image inspect ruby:latest</span>
+</code></pre></div>
+<p>截取之后的输出结果同样包含8个层，并且层ID是完整的。没层都是使用sha256的三散列值来标识镜像层。</p>
+<p><img alt="image-20210907100157937" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907100157937.png" /></p>
+<p>​   所有的Docker镜像都起始于一个**基础镜像层**，当进行修改或者添加新的内容时，就会在当前镜像层上创建新的镜像层。</p>
+<p>base镜像由两层含义：</p>
+<ul>
+<li>不依赖其他镜像，从scratch构建</li>
+<li>其他镜像可以基于基础镜像进行扩展。</li>
+</ul>
+<p>所以能成为基础镜像的通常为Linux的各种发型版本的Docker镜像，比如ubuntu，Debian，Centos等。base镜像提供的是最小安装的Linux发行版本。</p>
+<p>​   最新的ubuntu镜像只有70多M。之所以这么小是因为docker的镜像在运行的时候直接使用docker宿主机的的kernel。</p>
+<p><img alt="image-20210907102617143" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907102617143.png" /></p>
+<p>​   linux OS由kernel（内核）和rootfs（用户空间）组成。不同的linux发行版本的区别在于rootfs而不是kernel。比如ubuntu采用apt来管理软件包而centos采用的是yum。</p>
+<p><strong>注意：</strong></p>
+<p>​   base镜像只是用户空间和发行版一直，kernel使用的是宿主机的kernel。例如我的宿主机为centos7，kernel版本为：3.10.0-862.el7.x86_64。而在宿主机上安装的最新版本的ubuntu镜像的kernel版本也是3.10.0-862.el7.x86_64。</p>
+<p><img alt="image-20210907110247897" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907110247897.png" /></p>
+<p>​   一个简单的例子，基于ubuntu Linux 20.01创建一个新的镜像，这就是新镜像的第一层；如果在该镜像中添加了python包，就会在基础镜像上创建第二个镜像层；如果继续添加安全补丁，就会创建第三个镜像层，那么该镜像就会包含三个镜像层。如果这个镜像在网络上的仓库上你就可以在使用docker image pull [image:tag] 命令时查看镜像的层数，当然也可以使用docker image  inspect [image:tag]直接查看该镜像的层级。</p>
+<p>​   在添加额外镜像层的同时，镜像时钟保持是当前所有镜像层的组合。Docker采用存储引擎（新版本采用快照机制）的方式来实现镜像层的堆栈，并保证多镜像层对外表示为统一文件系统（UnionFS）。统一文件系统是一种分层，轻量级并且高性能的文件系统，它支持对文件系统的修改作为一次提交来一层层的叠加，同时可以将不同目录挂载到同一个虚拟机文件系统下(unite several directorire into a single  virtual filesystem)，Union文件系统是Docker镜像的基础。</p>
+<p>​   docker镜像采用分层机制实现了资源的共享。在前面拉取ruby:latest镜像的时候。本地已有的镜像层会显示Already exists。由此可知，Docker能够自动识别要拉取的镜像中，哪几层已经在本地存在，已存在的镜像层是可以共享的。</p>
+<p>​   Docker在linux上支持了多种存储引擎（Snapshotter）每个存储引擎都有自己的镜像分层、镜像共享和写时复制（COW）技术的具体实现。但是最终实现的效果和体现趋向一致。windows平台仅仅支持一种基于NTFS文件系统的存储引擎。</p>
+<p><img alt="image-20210907131856716" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907131856716.png" /></p>
+<p>​   关于镜像的Cow特性会在容器部分详细说明。</p>
+<h2 id="9">9.镜像散列值<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<p>​   Docker中的镜像是一些列松耦合的独立层的集合。</p>
+<p>​   镜像本事实际上是一个配置对象，其中包含了镜像层的列表和一些列的元数据信息。</p>
+<p>​   镜像层才是实际存储数据的地方，每个镜像层之间是完全相互独立的，所以不存在镜像集合的概念。</p>
+<p>​   镜像的唯一标识是一个加密的ID，该ID是配置对象本身的散列值，每个镜像层也有一个加密的ID去分，其值是镜像层本身内容的散列值。之前学过一个命令 docker image  inspest [image:latest]。通过这条命令可以查看ImageID和组成Image的各个分层的ID。</p>
+<p>以ruby:latest镜像为例</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image inspect ruby:latest</span>
+</code></pre></div>
+<p>Image ID：</p>
+<p><img alt="image-20210907133758053" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907133758053.png" /></p>
+<p>分层ID：</p>
+<p><img alt="image-20210907133820219" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907133820219.png" /></p>
+<p>如果要修改镜像的内容或者是其中的任意一层都会导致加密散列值的变化。所以镜像是不可变更的，每一层镜像发生变更都会被判别。</p>
+<h2 id="10">10.删除镜像<a class="headerlink" href="#10" title="Permanent link">&para;</a></h2>
+<p>​   当镜像不被需要的时候，就可以删除镜像以回收镜像所占用的空间。此时可以使用docker image rm [ImageID]来删除被ImageID标识的镜像。</p>
+<p>​   删除操作会在当前主机上删除该镜像的以及相关的镜像层。执行完docker image rm [ImageID]之后不能够时候docker image ls看到被删除的镜像。并且被删除的镜像的所包含的镜像层数据的目录也会被删除，但是如果被删除的镜像当中包含被共享的镜像层。之后当共享该镜像层所有的镜像被删除的才会被删除该共享层。</p>
+<p>​   如果被删除的镜像上存在运行状态的容器该镜像也无法被删除会报错。如果要删除该镜像需要在删除镜像之前停止所有使用该镜像的容器。</p>
+<p>显示所有镜像的ID</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image ls -q</span>
+</code></pre></div>
+<p><img alt="image-20210907135226157" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907135226157.png" /></p>
+<p>批量删除镜像：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker image rm $(docker image ls -q) -f</span>
+</code></pre></div>
+<p><img alt="image-20210907140037614" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907140037614.png" /></p>
+<p>批量停止容器</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container stop $(docker container ls -q)</span>
+</code></pre></div>
+<p>在批量删除镜像之前可以采用批量停止容器之后再做批量删除操作。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container stop $(docker container ls -q)</span>
+<span class="c1"># docker image rm $(docker image ls -q) -f</span>
+</code></pre></div>
+<h2 id="11">11.镜像的导入和导出<a class="headerlink" href="#11" title="Permanent link">&para;</a></h2>
+<h3 id="_1">镜像的导出<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p><img alt="image-20210910214837239" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210910214837239.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker save -o /test/myalpine.image alpine:latest</span>
+</code></pre></div>
+<p>或</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker save &gt; /test/myalpine.image alpine:latest</span>
+</code></pre></div>
+<p><img alt="image-20210910220241920" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210910220241920.png" /></p>
+<h3 id="_2">镜像的导入<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p><img alt="image-20210910221429556" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210910221429556.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker load -i /test/myalpine.image</span>
+</code></pre></div>
+<p>或</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker load &lt; /test/myalpine.image</span>
+</code></pre></div>
+                
+              
+              
+                
+
+
+  <h2 id="__comments">评论</h2>
+  <div id="disqus_thread"></div>
+  <script>var disqus_config=function(){this.page.url="https://www.hciehub.com/Docker/03-Docker%E9%95%9C%E5%83%8F%E8%AF%A6%E8%A7%A3/",this.page.identifier="Docker/03-Docker%E9%95%9C%E5%83%8F%E8%AF%A6%E8%A7%A3/"};window.addEventListener("load",function(){var e=document,i=e.createElement("script");i.src="//<hciehub>.disqus.com/embed.js",i.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(i)})</script>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../02-Docker%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              02-Docker中的几个基本概念
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../04-Docker%E5%AE%B9%E5%99%A8/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              04-Docker容器
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2016 - 2021 lickguys
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/hciehub" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+      <a href="" target="_blank" rel="noopener" title="" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M66.4 322.5H16V0h50.4v322.5zM166.9 76.1h-50.4V512h50.4V76.1zm100.6 0h-50.4V512h50.4V76.1zM368 76h-50.4v247H368V76z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/hcieonline" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.tabs"], "translations": {"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1273 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Just for fun.">
+      
+      
+      
+        <meta name="author" content="lickguys">
+      
+      
+        <link rel="canonical" href="https://www.hciehub.com/Docker/04-Docker%E5%AE%B9%E5%99%A8/">
+      
+      <link rel="icon" href="../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.3">
+    
+    
+      
+        <title>04-Docker容器 - Hcie hub</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e35208c4.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+    
+      
+        
+<script>window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)},ga.l=+new Date,ga("create","None","auto"),ga("set","anonymizeIp",!0),ga("send","pageview"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){var e;this.value&&(e=document.location.pathname,ga("send","pageview",e+"?q="+this.value))}),"undefined"!=typeof location$&&location$.subscribe(function(e){ga("send","pageview",e.pathname)})})</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <script>function __prefix(e){return new URL("../..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+      <script>var palette=__get("__palette");if(null!==palette&&"object"==typeof palette.color)for(var key in palette.color)document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#04-docker" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Hcie hub" class="md-header__button md-logo" aria-label="Hcie hub" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Hcie hub
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              04-Docker容器
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo" type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 10a2 2 0 0 1 2 2 2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2m10-3a5 5 0 0 1 5 5 5 5 0 0 1-5 5H7a5 5 0 0 1-5-5 5 5 0 0 1 5-5h10M7 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3h10a3 3 0 0 0 3-3 3 3 0 0 0-3-3H7z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="deep-purple" type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" data-md-state="active" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/hciehub.github.io" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hciehub/hciehub.github.io
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../HCIE/01-%E4%BA%91%E8%AE%A1%E7%AE%97%E7%AE%80%E4%BB%8B/" class="md-tabs__link">
+        HCIE
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../00-Docker%E5%AE%89%E8%A3%85/" class="md-tabs__link md-tabs__link--active">
+        O&M
+      </a>
+    </li>
+  
+
+  
+
+      
+    </ul>
+  </div>
+</nav>
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Hcie hub" class="md-nav__button md-logo" aria-label="Hcie hub" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    Hcie hub
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/hciehub.github.io" title="前往 GitHub 仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    hciehub/hciehub.github.io
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        HCIE
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="HCIE" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          HCIE
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../HCIE/01-%E4%BA%91%E8%AE%A1%E7%AE%97%E7%AE%80%E4%BB%8B/" class="md-nav__link">
+        01-云计算简介
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      <label class="md-nav__link" for="__nav_3">
+        O&M
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="O&M" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          O&M
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+    
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_1" type="checkbox" id="__nav_3_1" checked>
+      
+      <label class="md-nav__link" for="__nav_3_1">
+        Docker初探
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Docker初探" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_1">
+          <span class="md-nav__icon md-icon"></span>
+          Docker初探
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-Docker%E5%AE%89%E8%A3%85/" class="md-nav__link">
+        00-Docker安装
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-docker%E5%8D%87%E7%BA%A7/" class="md-nav__link">
+        01-Docker升级
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-Docker%E4%B8%AD%E7%9A%84%E5%87%A0%E4%B8%AA%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5/" class="md-nav__link">
+        02-Docker中的几个基本概念
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-Docker%E9%95%9C%E5%83%8F%E8%AF%A6%E8%A7%A3/" class="md-nav__link">
+        03-Docker镜像详解
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          04-Docker容器
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        04-Docker容器
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1.容器简介
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2.容器详解
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3docker-daemo" class="md-nav__link">
+    3.检查docker Daemo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4.启动容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5.容器进程
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    6.容器的生命周期
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    7.容器的重启策略
+  </a>
+  
+    <nav class="md-nav" aria-label="7.容器的重启策略">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#always" class="md-nav__link">
+    always
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unless-stopped" class="md-nav__link">
+    unless-stopped
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8docker" class="md-nav__link">
+    8.快速清理所有的docker容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    9.查看容器的配置细节和运行时信息。
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    10.导出容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    11.导入容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    12.文件拷贝
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    13.目录挂载（容器数据卷操作）
+  </a>
+  
+    <nav class="md-nav" aria-label="13.目录挂载（容器数据卷操作）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    指定目录挂载
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    匿名挂载
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    具名挂载
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    只读/读写
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volumes-from" class="md-nav__link">
+    volumes-from（继承）
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14ip" class="md-nav__link">
+    14.查看容器IP
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-Docker%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA/" class="md-nav__link">
+        05-Docker镜像构建
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1.容器简介
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2.容器详解
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3docker-daemo" class="md-nav__link">
+    3.检查docker Daemo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4.启动容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5.容器进程
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6" class="md-nav__link">
+    6.容器的生命周期
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7" class="md-nav__link">
+    7.容器的重启策略
+  </a>
+  
+    <nav class="md-nav" aria-label="7.容器的重启策略">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#always" class="md-nav__link">
+    always
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unless-stopped" class="md-nav__link">
+    unless-stopped
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8docker" class="md-nav__link">
+    8.快速清理所有的docker容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9" class="md-nav__link">
+    9.查看容器的配置细节和运行时信息。
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10" class="md-nav__link">
+    10.导出容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11" class="md-nav__link">
+    11.导入容器
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12" class="md-nav__link">
+    12.文件拷贝
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13" class="md-nav__link">
+    13.目录挂载（容器数据卷操作）
+  </a>
+  
+    <nav class="md-nav" aria-label="13.目录挂载（容器数据卷操作）">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    指定目录挂载
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    匿名挂载
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    具名挂载
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    只读/读写
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#volumes-from" class="md-nav__link">
+    volumes-from（继承）
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14ip" class="md-nav__link">
+    14.查看容器IP
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="04-docker">04-Docker容器<a class="headerlink" href="#04-docker" title="Permanent link">&para;</a></h1>
+<h2 id="1">1.容器简介<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>容器是镜像运行时的实例。如同从虚拟化平台上通过模板的方式启动虚拟机是一样的。用户可以从单个镜像启动一个或者多个容器。</p>
+<p>​   容器是打包代码及其所有依赖项的标准软件单元，因此可以方便程序在不同的计算环境之间实现快速，可靠的迁移。Docker Container Image是一个独立，标准化，轻量级，可执行的软件包。其中包含运行应用程序所需的一切：代码、运行环境、系统工具、系统库和配置文件。</p>
+<p>​   虚拟机和容器之间的最大区别是容器更加快速并且更加轻量级——虚拟机需要运行在完整的操作系统docker只需要与宿主机的操作系统共享内核。</p>
+<p><img alt="img" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/container-what-is-container.png" /></p>
+<h2 id="2">2.容器详解<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>容器和虚拟机之间的比较。在前面的内容讲解过程中一直用虚拟机跟容器类比的方式帮助大家理解什么容器。但是容器和虚拟机之间还是有些许的区别的，并且这也很重要。</p>
+<p>​   容器和虚拟机都依赖于宿主机才能正常运行。宿主机可以使笔记本，数据中心的物理服务器，也可以是在云上的弹性云服务器实例。</p>
+<p>​   通常在虚拟机模型中，首先要开启物理机启动hypervisor引导程序。一旦hypervisor启动，就会占用机器上全部的物理资源。包括计算资源，存储资源和网络资源。然后hypervisor接管这些资源之后会把这些资源划分到相应的资源池当中形成颗粒度较小的虚拟资源。把不同的虚拟资源按照所需的配置的打包进虚拟机中，这样用户就能通过虚拟机去调度这些虚拟资源并在上安装操作系统和应用提供给用户使用。</p>
+<p><img alt="2411631001011_.pic_hd" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/2411631001011_.pic_hd.jpg" /></p>
+<p>​   容器的模型与虚拟机模型相比有些许不同。</p>
+<p>​   服务器启动后，服务器上运行的操作系统启动。在Docker世界中可以选择linux，或者内核支持内核中的容器原语的新版本的windows。与虚拟机模型相同。OS也占用了全部硬件资源。在OS层之上，需要安装容器引擎（如Docker）容器可以获取系统资源，比如进程树、文件系统以及网络栈，接着讲资源分割成为安全的相互隔离的资源结构，称之为容器。每个容器看起来就像一个真实的操作系统，在其内部可以运行应用。</p>
+<p><img alt="image-20210907191357805" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907191357805.png" /></p>
+<p>​   Hypervisor实现的硬件虚拟化，Hypervisor将硬件资源划分为虚拟化资源；另外，容器是操作系统虚拟化。多个容器共享宿主机的内核。</p>
+<p>​   虚拟机带来的开销问题。虚拟机模型将底层的硬件资源划分到虚拟机当中。每个虚拟机都分配了一定的CPU，内存，存储，网络等资源。然后在虚拟机上安装操作系统，然后在虚拟机上安装所需的应用软件，但是虚拟机上的操作系统会带来开销，也就是说虚拟机上的操作系统会占用一定的资源来维持自身的正常运行和对虚拟机上硬件和软件资源的管理。通常这种开销被称之为OS Tax或者是VM Tax。</p>
+<p>​   容器模型具有在宿主机操作系统中运行的单个内核。在一台宿主机上运行数十个或者数百个容器也是可行的——在宿主机操作系统上的容器共用一个内核。这意味着只有一个操作系统消耗cpu，内存，存储资源。只有一个操作系统需要授权license。也就只有一个操作系统消耗资源，这样一来大大减少了资源的开销。</p>
+<p>​   容器和虚拟机相比并不是一个完整意义上的操作系统。容器的启动时间是要远远快于传统的虚拟机的。<strong>容器内部并不包含内核</strong>。</p>
+<p>​   linux的操作系统由内核空间和用户空间组成，内核空间是kernel，用户空间是rootfs, 不同Linux发行版的区别主要是rootfs.不同的容器共用一个内核只是rootfs不同。容器不需要内核因为内核由宿主机上的操作系统提供。</p>
+<p><img alt="2421631018068_.pic" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/2421631018068_.pic.jpg" /></p>
+<p><img alt="image-20210907203503510" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907203503510.png" /></p>
+<p>在这里我可以做一个实验佐证我刚才的说法。我搭建了两套docker实验环境，实验平台A使用的centos 7操作系统作为宿主机的操作系统；安装最新版本的docker环境。实验平台B使用的centos 8操作系统作为宿主机的操作系统；同样安装最新版本的docker环境。实验平台A和实验平台B都通过docker pull ubuntu:latest拉取官方仓库的默认ubuntu镜像。分别查看两套平台中运行的ubuntu容器中内核的版本和宿主机的版本。</p>
+<p>​   centos 8</p>
+<p><img alt="image-20210907210724592" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907210724592.png" /></p>
+<p>​   centos 7</p>
+<p><img alt="image-20210907210845943" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907210845943.png" /></p>
+<h2 id="3docker-daemo">3.检查docker Daemo<a class="headerlink" href="#3docker-daemo" title="Permanent link">&para;</a></h2>
+<p>通常登录Docker主机的第一件事就是检查Docker是否在运行状态。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker version</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>[root@Docker ~]# docker version
+Client: Docker Engine - Community
+ Version:           20.10.8
+ API version:       1.41
+ Go version:        go1.16.6
+ Git commit:        3967b7d
+ Built:             Fri Jul 30 19:55:49 2021
+ OS/Arch:           linux/amd64
+ Context:           default
+ Experimental:      true
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          20.10.8
+  API version:      1.41 (minimum version 1.12)
+  Go version:       go1.16.6
+  Git commit:       75249d8
+  Built:            Fri Jul 30 19:54:13 2021
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.4.9
+  GitCommit:        e25210fe30a0a703442421b0f60afac609f950a3
+ runc:
+  Version:          1.0.1
+  GitCommit:        v1.0.1-0-g4144b63
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+</code></pre></div>
+<p>当输出的内容包含Client和Server的内容时，表示Docker Daemon正在运行。</p>
+<p>如果Docker Daemon没有处在运行状态可以使用</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># service docker status</span>
+</code></pre></div>
+<p>启动docker daemon，只要显示如下内容表示启动成功。</p>
+<p><img alt="image-20210907212221584" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907212221584.png" /></p>
+<h2 id="4">4.启动容器<a class="headerlink" href="#4" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container run -it ubuntu:latest /bin/bash</span>
+</code></pre></div>
+<p>如果本地有相关镜像就直接将镜像启动为容器。</p>
+<p><img alt="image-20210907212447696" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907212447696.png" /></p>
+<p>如果要启动的容器的镜像不在本地，那么启动镜像需要先从网络上的仓库进行下载。下载完成后才能运行。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container run -it node </span>
+</code></pre></div>
+<p><img alt="image-20210907213004735" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210907213004735.png" /></p>
+<h2 id="5">5.容器进程<a class="headerlink" href="#5" title="Permanent link">&para;</a></h2>
+<p>在启动ubuntu镜像运行Bash shell（/bin/bash）。这使得**bash shell成为该容器中唯一运行的进程**，但是使用ps -elf查看进程是发现ubuntu容器中实际上包含两个进程。列表中PID为1 的是容器中运行的bash shell进程表，而PID 10是ps -elf产生的，这是一个临时进程，在输出结果后该进程就退出了。</p>
+<p><img alt="image-20210908093541710" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908093541710.png" /></p>
+<h2 id="6">6.容器的生命周期<a class="headerlink" href="#6" title="Permanent link">&para;</a></h2>
+<p>​   所谓的生命周期实际上可以理解为容器从创建到销毁的过程中做的所有操作都可以称之为容器的生命周期。</p>
+<p>​   一个比较重要的问题，容器能够对数据进行持久化操作吗？<strong>容器是可以对数据进行持久化操作的</strong>。</p>
+<p>​   本次实验会创建一个新的容器，用来观察该容器完整的生命周期。</p>
+<p>1.启动一个ubuntu:latest容器并将其命名为percy</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container run --name percy -it /bin/bash</span>
+</code></pre></div>
+<p>2.将数据写入到tmp目录下的某个文件</p>
+<div class="highlight"><pre><span></span><code>root@eea152e1190b:/# <span class="nb">cd</span> tmp/
+root@eea152e1190b:/tmp# ll
+total <span class="m">0</span>
+drwxrwxrwt. <span class="m">2</span> root root <span class="m">6</span> Aug <span class="m">27</span> <span class="m">07</span>:27 ./
+drwxr-xr-x. <span class="m">1</span> root root <span class="m">6</span> Sep  <span class="m">8</span> <span class="m">01</span>:49 ../
+root@eea152e1190b:/tmp# <span class="nb">echo</span> <span class="s2">&quot;Miaomiao&quot;</span> &gt; myheart
+root@eea152e1190b:/tmp# ls -l
+total <span class="m">4</span>
+-rw-r--r--. <span class="m">1</span> root root <span class="m">9</span> Sep  <span class="m">8</span> <span class="m">01</span>:55 myheart
+root@eea152e1190b:/tmp# cat myheart
+Miaomiao
+</code></pre></div>
+<p><img alt="image-20210908095550058" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908095550058.png" /></p>
+<p>3.接下来停止运行percy容器</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container stop percy</span>
+</code></pre></div>
+<p><img alt="image-20210908100507540" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908100507540.png" /></p>
+<p>4.查看percy容器是否还在运行状态。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container ls </span>
+</code></pre></div>
+<p>正在运行中的容器中已经没有名称为percy的容器了，证明该容器已经停止运行。</p>
+<p><img alt="image-20210908100808243" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908100808243.png" /></p>
+<p>5.查看所有容器的状态包括处于停止状态的容器</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container ls -a</span>
+</code></pre></div>
+<p><img alt="image-20210908101827312" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908101827312.png" /></p>
+<p>6.重启percy容器</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container start percy</span>
+</code></pre></div>
+<p><img alt="image-20210908101925655" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908101925655.png" /></p>
+<p>7.查看percy容器的是否被启动</p>
+<p><img alt="image-20210908102016159" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908102016159.png" /></p>
+<p>8.连接到percy容器</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container exec -it percy /bin/bash</span>
+</code></pre></div>
+<p><img alt="image-20210908102202155" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908102202155.png" /></p>
+<p>9.查看percy容器中创建的文件是否存在</p>
+<div class="highlight"><pre><span></span><code>root@eea152e1190b:/# <span class="nb">cd</span> tmp/
+root@eea152e1190b:/tmp# ll
+total <span class="m">4</span>
+drwxrwxrwt. <span class="m">1</span> root root <span class="m">21</span> Sep  <span class="m">8</span> <span class="m">01</span>:55 ./
+drwxr-xr-x. <span class="m">1</span> root root <span class="m">29</span> Sep  <span class="m">8</span> <span class="m">01</span>:49 ../
+-rw-r--r--. <span class="m">1</span> root root  <span class="m">9</span> Sep  <span class="m">8</span> <span class="m">01</span>:55 myheart
+root@eea152e1190b:/tmp# cat myheart
+Miaomiao
+</code></pre></div>
+<p>容器重启后，之前在容器中创建的文件依然存在，并且文件中包含的数据并没有发生变更。这说明容器重启或者停止运行都不会损毁容器和其中的数据。</p>
+<p>​   上面的实验说明了容器是能够进行数据的持久化存储的，但是实际上卷（volume）才是容器中存储持久化数据的首选方式。</p>
+<p>直接删除运行中的容器。</p>
+<p>​   首先查看正在运行中的容器</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container ls </span>
+</code></pre></div>
+<p>​   <img alt="image-20210908103756418" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908103756418.png" /></p>
+<p>删除容器可以使用Container ID或者是容器的名称（名称可以自动生成也可以人为指定）</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container rm percy  cb9162562fbe -f</span>
+</code></pre></div>
+<p><img alt="image-20210908104118157" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908104118157.png" /></p>
+<p>虽然使用 -f参数可以直接不加提示的产出运行中的容器；但是非常不建议这么做。在生产活动中删除容器最好还是分两步：1.停止正在运行中的容器 2.删除停止的容器。这样才足够优雅。</p>
+<p>​   容器的生命周期；包含了容器的启动，运行，停止，暂停等多次操作。除非删除容器，否则容器并不会丢失其中的数据。但是如果数据是存放在卷当中的，即使删除卷，数据也会被保存下来。</p>
+<h2 id="7">7.容器的重启策略<a class="headerlink" href="#7" title="Permanent link">&para;</a></h2>
+<p>​   在运行容器时最好配置好容器的重启策略。这是容器的一种自我修复。可以在指定时间或者发生错误后通过重启来完成自我修复（重启真的能够解决百分之九十九的问题 哈哈）。</p>
+<p>​   重启策略可以应用于每个容器，可以作为参数传入docker-container run命令中或者早Compose文件中声明（需要在使用Docker Compose以及Docker Stacks时才可以）。</p>
+<p>​   容器支持的重启策略。</p>
+<ul>
+<li>always</li>
+</ul>
+<p>always是一种简单的重启策略；除非使用手动停止；如docker container stop [containerID|containerName]的方式停止运行的容器。always还有一个有意思的地方在于当docker daemon重启的时候，即使手动方式停止的容器也会重启。</p>
+<ul>
+<li>unless-stopped</li>
+</ul>
+<p>unless-stoppde和always最大的区别就是当docker daemon重启的时候；容器的重启策略为unless-stopped时不会被策略触发重启操作。</p>
+<ul>
+<li>on-failed</li>
+</ul>
+<p>on-failed策略会在退出容器并且返回值不是0（0表示正常退出）的时候，触发容器的重启策略。就算容器处于stopped状态并且在Docker deamon重启的时候，容器也会被重启。</p>
+<ul>
+<li>on-failed:3</li>
+</ul>
+<p>与on-failed的策略基本一致，只不过最多重启3次。</p>
+<ul>
+<li>no（default）</li>
+</ul>
+<p>默认策略，在容器退出时不重启容器。</p>
+<h3 id="always">always<a class="headerlink" href="#always" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container run --name always -it --restart always ubuntu:latest /bin/bash</span>
+</code></pre></div>
+<p>用命令查看运行中的容器发现CREATE时间是4minutes之前，但是启动时间是11seconds之前。表示在执行exit退出后，docker显示自动杀死了这个容器进程然后出发了容器的always策略自动将容器重启了。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container ls </span>
+</code></pre></div>
+<p><img alt="image-20210908141851218" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908141851218.png" /></p>
+<p>在always策略的容器停止的情况下，重启docker deamon；发现always策略的容器自动重启了。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container stop always </span>
+<span class="c1"># docker container ls -a</span>
+<span class="c1"># systemctl restart docker </span>
+<span class="c1"># docker container ls </span>
+</code></pre></div>
+<p><img alt="image-20210908143157410" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908143157410.png" /></p>
+<h3 id="unless-stopped">unless-stopped<a class="headerlink" href="#unless-stopped" title="Permanent link">&para;</a></h3>
+<p>创建一个重启策略为unless-stopped的容器</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container run --name unless-stopped -it --restart unless-stopped ubuntu:latest /bin/bash</span>
+</code></pre></div>
+<p><img alt="image-20210908144144021" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908144144021.png" />退出容器之后；查看该容器的策略是否执行。显示容器的创建时间是22秒前，但是创建时间是7秒前。表示出发了unless-stopped策略，将容器重启了。</p>
+<p><img alt="image-20210908144205240" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908144205240.png" /></p>
+<p>使用命令手动停止运行中的容器。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container stop unless-stopped</span>
+</code></pre></div>
+<p><img alt="image-20210908144532920" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908144532920.png" /></p>
+<p>查看容器的状态</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container ls -a</span>
+</code></pre></div>
+<p><img alt="image-20210908144559016" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908144559016.png" /></p>
+<p>重启docker deamon</p>
+<div class="highlight"><pre><span></span><code># systemctl restart docker 
+</code></pre></div>
+<p><img alt="image-20210908144630355" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908144630355.png" /></p>
+<p>在此查看该容器的状态发现容器没有被启动</p>
+<p><img alt="image-20210908144852268" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908144852268.png" /></p>
+<h2 id="8docker">8.快速清理所有的docker容器<a class="headerlink" href="#8docker" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container rm $(docker container ls -aq) -f</span>
+</code></pre></div>
+<h2 id="9">9.查看容器的配置细节和运行时信息。<a class="headerlink" href="#9" title="Permanent link">&para;</a></h2>
+<p>可以使用容器ID或者容器名</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container inspect ubuntutest</span>
+</code></pre></div>
+<p><img alt="image-20210908173424947" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210908173424947.png" /></p>
+<h2 id="10">10.导出容器<a class="headerlink" href="#10" title="Permanent link">&para;</a></h2>
+<p>如果要导出本地某个容器，可以使用docker export命令</p>
+<p>​   查看容器的ID或者名称</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container ls </span>
+</code></pre></div>
+<p><img alt="image-20210909001104061" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210909001104061.png" /></p>
+<p>​   导出容器</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container export 9ecb95ba5b7e &gt; nginx.tar</span>
+</code></pre></div>
+<p><img alt="image-20210909001335283" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210909001335283.png" /></p>
+<h2 id="11">11.导入容器<a class="headerlink" href="#11" title="Permanent link">&para;</a></h2>
+<p>如果要导入本地某个容器，可以使用docker import命令</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker import xxx.tar &lt;image:Ltag&gt;</span>
+</code></pre></div>
+<h2 id="12">12.文件拷贝<a class="headerlink" href="#12" title="Permanent link">&para;</a></h2>
+<h2 id="13">13.目录挂载（容器数据卷操作）<a class="headerlink" href="#13" title="Permanent link">&para;</a></h2>
+<p>​   在创建容器的时候，将宿主机的目录与容器内的目录进行映射，这样就可以通过修改宿主机某个目录的文件从而去影响容器，而且这个操作是双向绑定的，也就是说容器内的操作也会影响到宿主机实现备份功能。</p>
+<p>​   但是容器被删除的时候，宿主机内的内容不会被删除。如果多个容器挂载同一个目录，其中一个容器被删除，其它容器的内容也不会受到影响。
+​   容器与宿主机之间的数据属于引用关系，数据卷是从外界挂载到容器内部的，所以可以脱离容器的生命周期而独立存在，正是由于数据卷的生命周期不等于容器的生命周期，在容器退出或者删除以后，数据仍然不会受到影响，数据卷的生命周期会一直持续到没有容器使用它为止。</p>
+<p>​   创建容器添加 -v参数，格式为 <code>宿主机目录：容器目录</code>,例如：</p>
+<p>​   将宿主机的一个一个目录/dockervolume挂载给新创建的容器centos7_01的/usr/local/data_volume。</p>
+<h3 id="_1">指定目录挂载<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p>1.在宿主机创建挂载目录dockervolume;并在其中创建dockervolume.txt文件。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># mkdir /dockervolume</span>
+<span class="c1"># cd /dockervolume</span>
+<span class="c1"># vi dockervolume.txt</span>
+</code></pre></div>
+<p><img alt="image-20210914164947654" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210914164947654.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="c1">#docker container run  -di -v /dockervolume:/usr/local/data_volume --name centos7_01 centos:7</span>
+</code></pre></div>
+<p><img alt="image-20210914165223248" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210914165223248.png" /></p>
+<p>2.在容器内查看是否有挂载目录；内容是否与宿主机一致</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># cd /usr/local/data_volume</span>
+<span class="c1"># ls</span>
+<span class="c1"># cat dockervolume.txtcen</span>
+</code></pre></div>
+<p><img alt="image-20210914165604040" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210914165604040.png" /></p>
+<p>多目录挂载：</p>
+<p>​   同时将多个目录挂载到同一个容器。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker container run -di -v /宿主机目录:/容器目录 -v /宿主机目录2:/容器目录 镜像名</span>
+</code></pre></div>
+<p>目录挂载操作可能会出现权限不足的提示，这是因为centos7中的安全模块SELinux吧权限禁掉了，在docker run时通过 --privilege=true给该容器增加权限来解决权限不足的问题。</p>
+<h3 id="_2">匿名挂载<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>​   匿名挂载只需要写容器目录即可，容器外对应的目录会在/var/lib/docker/volume中生成。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker  run -di -v /usr/local/niming --name niming  centos:7</span>
+</code></pre></div>
+<p>​   使用docker inspect <ContainerName/Container ID>能够找到容器上的挂载目录对应在宿主机上的位置。<img alt="image-20210914201147338" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210914201147338.png" /></p>
+<h3 id="_3">具名挂载<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>​   具名挂载就是给互数据卷起了个名字，容器外对应的目录会在/var/lib/docker/volume</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker run -di -v 容器挂载点名称:挂载点位置 --name 容器名 镜像</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker  run -di -v docker_centos_data:/usr/local/niming --name niming  centos:8</span>
+</code></pre></div>
+<p><img alt="image-20210914203916540" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210914203916540.png" /></p>
+<h3 id="_4">只读/读写<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<h3 id="volumes-from">volumes-from（继承）<a class="headerlink" href="#volumes-from" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>// 容器centos7-01指定挂载目录
+<span class="c1"># docker run -di -v /mydata/docker_centos/data:/usr/local/data --name centos7-01 centos:7</span>
+// 容器centos7-04 和centos7-05 相当于继承centos7-01容器的挂载目录
+<span class="c1"># docker run -di --volumes-from centos7-01 --name centos7-04 centos:7</span>
+<span class="c1"># docker run -di --volumes-from centos7-01 --name centos7-05 centos:7</span>
+</code></pre></div>
+<h2 id="14ip">14.查看容器IP<a class="headerlink" href="#14ip" title="Permanent link">&para;</a></h2>
+<p>可以通过 dokcer inspect 容器名称|容器ID查看容器的元信息</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker inspect niming01</span>
+</code></pre></div>
+<p><img alt="image-20210914204949452" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210914204949452.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># docker inspect --format=&#39;{{.NetworkSettings.IPAddress}}&#39; niming01</span>
+</code></pre></div>
+<p><img alt="image-20210914205537140" src="https://gitee.com/hanstack/hanstack_image/raw/master/img/image-20210914205537140.png" /></p>
+                
+              
+              
+                
+
+
+  <h2 id="__comments">评论</h2>
+  <div id="disqus_thread"></div>
+  <script>var disqus_config=function(){this.page.url="https://www.hciehub.com/Docker/04-Docker%E5%AE%B9%E5%99%A8/",this.page.identifier="Docker/04-Docker%E5%AE%B9%E5%99%A8/"};window.addEventListener("load",function(){var e=document,i=e.createElement("script");i.src="//<hciehub>.disqus.com/embed.js",i.setAttribute("data-timestamp",+new Date),(e.head||e.body).appendChild(i)})</script>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../03-Docker%E9%95%9C%E5%83%8F%E8%AF%A6%E8%A7%A3/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                上一页
+              </span>
+              03-Docker镜像详解
+            </div>
+          </div>
+        </a>
+      
+      
+        <a href="../05-Docker%E9%95%9C%E5%83%8F%E6%9E%84%E5%BB%BA/" class="md-footer__link md-footer__link--next" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                下一页
+              </span>
+              05-Docker镜像构建
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            Copyright &copy; 2016 - 2021 lickguys
+          </div>
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+  <div class="md-footer-social">
+    
+      
+      
+        
+        
+      
+      <a href="https://github.com/hciehub" target="_blank" rel="noopener" title="github.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+      </a>
+    
+      
+      
+      <a href="" target="_blank" rel="noopener" title="" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path d="M66.4 322.5H16V0h50.4v322.5zM166.9 76.1h-50.4V512h50.4V76.1zm100.6 0h-50.4V512h50.4V76.1zM368 76h-50.4v247H368V76z"/></svg>
+      </a>
+    
+      
+      
+        
+        
+      
+      <a href="https://twitter.com/hcieonline" target="_blank" rel="noopener" title="twitter.com" class="md-footer-social__link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+      </a>
+    
+  </div>
+
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.tabs"], "translations": {"clipboard.copy": "\u590d\u5236", "clipboard.copied": "\u5df2\u590d\u5236", "search.config.lang": "ja", "search.config.pipeline": "trimmer, stemmer", "search.config.separator": "[\\uff0c\\u3002]+", "search.placeholder": "\u641c\u7d22", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../../assets/javascripts/workers/search.fe42c31b.min.js", "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.4ea5477f.min.js"></script>
+      
+    
+  </body>
+</html>
